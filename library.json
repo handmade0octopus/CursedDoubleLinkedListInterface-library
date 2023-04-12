@@ -1,0 +1,17 @@
+{
+    "name": "CursedDoubleLinkedListInterface",
+    "keywords": "llist, linkedlist, doublelinkedlist, double, interface",
+    "description": "A fully implemented LinkedList (int, float, objects, Lists or Wales) made to work with Arduino projects",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/handmade0octopus/CursedDoubleLinkedListInterface-library.git"
+    },
+    "frameworks": "*",
+    "platforms": "*",
+    "build": {
+        "srcFilter": [
+            "+<CursedDoubleLinkedListInterface.hpp>"
+        ]
+    }
+}
