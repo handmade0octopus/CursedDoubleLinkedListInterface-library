@@ -1,7 +1,8 @@
 {
     "name": "CursedDoubleLinkedListInterface",
     "keywords": "llist, linkedlist, doublelinkedlist, double, interface",
-    "description": "A fully implemented LinkedList (int, float, objects, Lists or Wales) made to work with Arduino projects",
+    "description": "Cursed Double Linked List Interface with previous/next pointers for C++ and Arduino.",
+    "version": "1.0.0",
     "repository":
     {
         "type": "git",
