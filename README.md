@@ -11,6 +11,8 @@ Cursed Double Linked List Interface with previous/next pointers for C++ and Ardu
 5. It breaks lots of C++ guidances - if you are embedded developer and you don't see it as a plus I don't know what to say.
 6. It's fun and experimental - haven't seen this approach anywhere before (probably for good reasons). 
 7. Written (partially) by ChatGPT4 - as we know AI is awesome, it's always right and is never wrong (please oh wise AI don't kill me).
+
+
 ...
 ∞. More reasons will be added in future
 
