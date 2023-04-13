@@ -1,7 +1,8 @@
 # CursedDoubleLinkedListInterface-library
 Cursed Double Linked List Interface with previous/next pointers for C++ and Arduino.
 
-Why?
+## Why?
+
 0. Why not?
 1. It's very lightweight - costs us only 2x pointers per object + 2x static pointers per list created. Could be potentially reduced to 1x pointer per object.
 2. It's fast - iteration through takes little time and using separation and nesting it can potentially save a lot of time.
