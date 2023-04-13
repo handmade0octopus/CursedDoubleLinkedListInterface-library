@@ -7,7 +7,7 @@ Cursed Double Linked List Interface with previous/next pointers for C++ and Ardu
 1. It's very lightweight - costs us only 2x pointers per object + 2x static pointers per list created. Could be potentially reduced to 1x pointer per object.
 2. It's fast - iteration through takes little time and using separation and nesting it can potentially save a lot of time.
 3. It's portable - you can add it to any type of class you want, you can use it on any platform, anywhere where at least C++11 compiles.
-4. It reduces boilerplate - aim was to support auto for loop for any object container we want.
+4. It reduces boilerplate - aim was to support auto range based for loop for any object container we want.
 5. It breaks lots of C++ guidances - if you are embedded developer and you don't see it as a plus I don't know what to say.
 6. It's fun and experimental - haven't seen this approach anywhere before (probably for good reasons). 
 7. Written (partially) by ChatGPT4 - as we know AI is awesome, it's always right and is never wrong (please oh wise AI don't kill me).
