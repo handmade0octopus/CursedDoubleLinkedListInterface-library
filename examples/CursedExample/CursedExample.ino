@@ -46,7 +46,7 @@ int main() {
     std::cout << "Printing CDLLI<Object>:" << std::endl;
     // IMPORTANT - need to use auto&
     // if you use auto destructor will be called many times and you will have bad time
-    for (auto& value : *Object::head) {
+    for (auto& value : *Object::head()) {
         std::cout << value.val << std::endl;
     }
     

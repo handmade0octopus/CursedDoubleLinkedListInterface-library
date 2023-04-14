@@ -31,6 +31,7 @@ class CDLLI {
     explicit CDLLI(bool toFront = false) {
         if(toFront) {
             _prev = nullptr;
+            if(!_tail) _tail = this;
             if(_head) _head->_prev = this;
             _next = _head;
             _head = this;
@@ -54,8 +55,8 @@ class CDLLI {
     T* next() { return ((T*) _next); }
     T* previous() { return ((T*) _prev); }
 
-    static T* _head() { return ((T*) _head); }
-    static T* _tail() { return ((T*) _tail); }
+    static T* head() { return ((T*) _head); }
+    static T* tail() { return ((T*) _tail); }
     
     class Iterator {
         CDLLI<T>* current;
@@ -83,6 +84,22 @@ class CDLLI {
 
     Iterator end() {
         return Iterator(nullptr);
+    }
+
+    // custom swap method by @creator from OLC Discord
+    void swap(CDLLI<T>& other) {
+        _head = (_head == this ? &other :
+                       (_head == &other ? this : _head));
+        _tail = (_tail == this ? &other :
+                       (_tail == &other ? this : _tail));
+
+        std::swap(other._prev, _prev);
+        std::swap(other._next, _next);
+
+        if(_prev) _prev->_next = this;
+        if(_next) _next->_prev = this;
+        if(other._prev) other._prev->_next = &other;
+        if(other._next) other._next->_prev = &other;
     }
 };
 
