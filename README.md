@@ -37,7 +37,7 @@ And then we can declare like this and iterate:
     Object a, b, c;
     // IMPORTANT - need to use auto&
     // if you use auto destructor will be called many times and you will have bad time
-    for(auto& value : *Object::head) {
+    for(auto& value : Object::getHead()) {
         Serial.println(value.val); // Will print value of a, b and c
     }
 ```

@@ -16,30 +16,28 @@
 // Derive it and pass your class type into T
 template <typename T>
 class CDLLI {
-    // _head and _tail are static, this way you can use it easily with T._head for iteration
-    static CDLLI<T>* _head;
-    static CDLLI<T>* _tail;
     // We only need _next but _prev is useful for handling it faster
     // and accesing nearby nodes faster
     CDLLI<T>* _next;
     CDLLI<T>* _prev;
  public:
-    
-    
+    // head and tail are static, this way you can use it easily with T.head for iteration
+    static CDLLI<T>* head;
+    static CDLLI<T>* tail;
     
     // Initialization - on construction object is automatically added to the linked list
     explicit CDLLI(bool toFront = false) {
         if(toFront) {
             _prev = nullptr;
-            if(!_tail) _tail = this;
-            if(_head) _head->_prev = this;
-            _next = _head;
-            _head = this;
+            if(!tail) tail = this;
+            if(head) head->_prev = this;
+            _next = head;
+            head = this;
         } else {
-            _prev = _tail;
-            if(!_head) _head = this;
-            if(_tail) _tail->_next = this;
-            _tail = this;
+            _prev = tail;
+            if(!head) head = this;
+            if(tail) tail->_next = this;
+            tail = this;
             _next = nullptr;
         }
     }
@@ -47,16 +45,27 @@ class CDLLI {
     virtual ~CDLLI() {
         if(_prev) _prev->_next = _next;
         if(_next) _next->_prev = _prev;
-        if(_tail == this) _tail = _prev;
-        if(_head == this) _head = _next;
+        if(tail == this) tail = _prev;
+        if(head == this) head = _next;
     }
     
     // NOTE: use object.T::next() if object is inherited by different lists
-    T* next() { return ((T*) _next); }
-    T* previous() { return ((T*) _prev); }
+    T* next(bool wrap = false) {
+        if(!_next && wrap) return (T*) head;
+        return ((T*) _next);
+    }
+    T* previous(bool wrap = false) {
+        if(!_next && wrap) return (T*) tail;
+        return ((T*) _prev);
+    }
 
-    static T* head() { return ((T*) _head); }
-    static T* tail() { return ((T*) _tail); }
+    static T& getHead() {
+        return *(T*)head;
+    }
+
+    static T& getTail() {
+        return *(T*)tail;
+    }
     
     class Iterator {
         CDLLI<T>* current;
@@ -79,7 +88,7 @@ class CDLLI {
     };
 
     Iterator begin() {
-        return Iterator(_head);
+        return Iterator(head);
     }
 
     Iterator end() {
@@ -88,13 +97,18 @@ class CDLLI {
 
     // custom swap method by @creator from OLC Discord
     void swap(CDLLI<T>& other) {
-        _head = (_head == this ? &other :
-                       (_head == &other ? this : _head));
-        _tail = (_tail == this ? &other :
-                       (_tail == &other ? this : _tail));
+        head = (head == this ? &other :
+                       (head == &other ? this : head));
+        tail = (tail == this ? &other :
+                       (tail == &other ? this : tail));
 
-        std::swap(other._prev, _prev);
-        std::swap(other._next, _next);
+        auto swap = _prev;
+        _prev = other._prev;
+        other._prev = swap;
+
+        swap = _next;
+        _next = other._next;
+        other._next = swap;
 
         if(_prev) _prev->_next = this;
         if(_next) _next->_prev = this;
@@ -104,8 +118,8 @@ class CDLLI {
 };
 
 template <typename T>
-CDLLI<T>* CDLLI<T>::_head = nullptr;
+CDLLI<T>* CDLLI<T>::head = nullptr;
 template <typename T>
-CDLLI<T>* CDLLI<T>::_tail = nullptr;
+CDLLI<T>* CDLLI<T>::tail = nullptr;
 
 #endif
