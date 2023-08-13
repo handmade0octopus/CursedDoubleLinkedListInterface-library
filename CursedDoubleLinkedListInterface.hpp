@@ -55,7 +55,7 @@ class CDLLI {
         return ((T*) _next);
     }
     T* previous(bool wrap = false) {
-        if(!_next && wrap) return (T*) tail;
+        if(!_prev && wrap) return (T*) tail;
         return ((T*) _prev);
     }
 

@@ -2,7 +2,7 @@
     "name": "CursedDoubleLinkedListInterface",
     "keywords": "llist, linkedlist, doublelinkedlist, double, interface",
     "description": "Cursed Double Linked List Interface with previous/next pointers for C++ and Arduino.",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "repository":
     {
         "type": "git",
