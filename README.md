@@ -1,95 +1,43 @@
-# CursedDoubleLinkedListInterface-library
-Cursed Double Linked List Interface with previous/next pointers for C++ and Arduino.
+# CursedDoubleLinkedListInterface
 
-## Why?
+Intrusive doubly-linked list interface for **[Gauge.S](https://sorek.uk)** —
+the open automotive gauge / data logger by **[sorek.uk](https://sorek.uk)**
+([shop.sorek.uk](https://shop.sorek.uk)).
 
-0. Why not?
-1. It's very lightweight - costs us only 2x pointers per object + 2x static pointers per list created. Could be potentially reduced to 1x pointer per object.
-2. It's fast - iteration through takes little time and using separation and nesting it can potentially save a lot of time.
-3. It's portable - you can add it to any type of class you want, you can use it on any platform, anywhere where at least C++11 compiles.
-4. It reduces boilerplate - aim was to support auto range based for loop for any object container we want.
-5. It breaks lots of C++ guidances - if you are embedded developer and you don't see it as a plus I don't know what to say.
-6. It's fun and experimental - haven't seen this approach anywhere before (probably for good reasons). 
-7. Written (partially) by ChatGPT4 - as we know AI is awesome, it's always right and is never wrong (please oh wise AI don't kill me).
+Inherit `CDLLI<YourClass>` (CRTP) and every instance links itself into a
+per-type list at construction and unlinks at destruction — two pointers per
+object, zero allocation, and range-based `for` over the whole list with no
+container boilerplate. Written for Arduino/embedded but compiles anywhere
+C++11 does. It is what [CarDataS](https://github.com/handmade0octopus/CarDataS.git)
+uses to keep every sensor Holder and CAN OutputPoint iterable — including
+static objects, which self-link before `setup()` runs.
 
+## Highlights
 
-...
+- **Header-only, single file, no dependencies** (C++11; Arduino optional)
+- **Auto-link/unlink** in constructor/destructor — O(1) insert and remove
+- **Range-based `for`** plus `next()`/`previous()` with wrap-around and `swap()`
+- **One independent list per type**; nest bases to put one object in several lists
+- **Battle-tested** in CarDataS (Holder / OutputPoint iteration) and the
+  Gauge.S firmware + WASM simulator
 
-∞. More reasons will be added in future
+## Documentation
 
-## How to use?
-Look at example but here are few use cases:
+- **`AGENTS.md`** — the full technical reference: API, usage patterns, traps
+  (copy semantics, empty lists, thread safety), conventions. Start there
+  whether you are a human or an AI agent.
+- **Gauge.S project**: [sorek.uk](https://sorek.uk) · [shop.sorek.uk](https://shop.sorek.uk)
+- Repository: [github.com/handmade0octopus/CursedDoubleLinkedListInterface-library](https://github.com/handmade0octopus/CursedDoubleLinkedListInterface-library.git)
+- Example: `examples/CursedExample/CursedExample.ino`
 
-```cpp
-// We create our derived class and pass itself to the constructor of our LinkedList
-class Object : public CDLLI<Object> {
-  public:
-    static int statval;
-    int val;
-    Object() {
-        val = statval++; // Just random stuff so we can display constructor calls
-    }
-};
-```
+## Dependencies
 
-And then we can declare like this and iterate:
-```cpp
-    Object a, b, c;
-    // IMPORTANT - need to use auto&
-    // if you use auto destructor will be called many times and you will have bad time
-    for(auto& value : Object::getHead()) {
-        Serial.println(value.val); // Will print value of a, b and c
-    }
-```
+- None (C++11 standard; Arduino optional)
 
-Or iterate directly from the object:
-```cpp
-    for (auto& value : a) {
-        Serial.println(value.val); // Will print value of a, b and c
-    }
-```
+## Author
 
-It shines most if we need to split linked lists or nest them so objects can sometimes be iterated through when we need:
+**sorek** — [sorek.uk](https://sorek.uk) — contact@sorek.uk
 
-```cpp
-// Real usefullness if we want to separate our linked lists
-class ObjectSeparate : public CDLLI<ObjectSeparate> {
-    public:
-    int not_val; // To differentiate from val in object
-    ObjectSeparate(int v = 0) : CDLLI(true) { // We put it from the front now
-        not_val = 100 + v;
-    }
-};
+## License
 
-// Or we can nest them having one type in one list and second in the other
-class ObjectNested : public Object, public ObjectSeparate {
-    public:
-    ObjectNested() {
-        val = 111111;
-        not_val = 222222;
-    }
-};
-```
-
-Output from this functions should look like this.
-
-```cpp
-
-    Object a, b, c;
-    ObjectSeparate test, test1(5), test2(8);
-    ObjectNested nested;
-
-    for (auto& value : a) {
-        Serial.println(value.val); // Will print value of 0, 1 and 2 and 111111
-    }
-
-    for(auto& value : test) {
-        Serial.println(value.not_val); // Will print 222222, 108, 105 and 100 (because we made it put things in the front)
-    }
- ```
-
-
-
-Enjoy and please note this is MIT licensed so I am not responsible - especially for damage while reading it.
-
-This library is **evil**, you have been warned!
+MIT — see [LICENSE](LICENSE). Copyright (c) sorek.uk.
